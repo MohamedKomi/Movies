@@ -17,9 +17,10 @@ import '../../domain/entities/tv_genres.dart';
 
 class TvDetailsScreen extends StatefulWidget {
   final int id;
- final int currentSeason;
+  final int currentSeason;
 
-  const TvDetailsScreen({Key? key, required this.id, required this.currentSeason})
+  const TvDetailsScreen(
+      {Key? key, required this.id, required this.currentSeason})
       : super(key: key);
 
   @override
@@ -34,14 +35,17 @@ class _TvDetailsScreenState extends State<TvDetailsScreen> {
       Text(AppString.moreLikeThis),
     ];
     return BlocProvider(
-        create: (BuildContext context) => sl<TvDetailsBloc>()
-          ..add(GetTvDetailsEvents(widget.id))
-          ..add(GetTvRecommendationsEvents(widget.id))
-          ..add(GetTvEpisodesEvents(widget.id, widget.currentSeason)),
+        create: (BuildContext context) =>
+        sl<TvDetailsBloc>()
+          ..add(GetTvDetailsEvents(widget.id))..add(
+            GetTvRecommendationsEvents(widget.id))..add(
+            GetTvEpisodesEvents(widget.id, widget.currentSeason)),
         child: BlocBuilder<TvDetailsBloc, TvDetailsStates>(
           builder: (context, state) {
             final episodes = state.tvEpisodes;
-            var size = MediaQuery.of(context).size;
+            var size = MediaQuery
+                .of(context)
+                .size;
             switch (state.tvDetailsState) {
               case RequestState.loading:
                 return const Center(
@@ -127,7 +131,7 @@ class _TvDetailsScreenState extends State<TvDetailsScreen> {
                                         decoration: BoxDecoration(
                                           color: Colors.grey[800],
                                           borderRadius:
-                                              BorderRadius.circular(4.0),
+                                          BorderRadius.circular(4.0),
                                         ),
                                         child: Text(
                                           state.tvDetails!.airDate
@@ -179,7 +183,7 @@ class _TvDetailsScreenState extends State<TvDetailsScreen> {
                                       ),
                                     ],
                                   ),
-                                   SizedBox(height: size.height*.02),
+                                  SizedBox(height: size.height * .02),
                                   Text(
                                     state.tvDetails!.overview,
                                     style: const TextStyle(
@@ -190,7 +194,8 @@ class _TvDetailsScreenState extends State<TvDetailsScreen> {
                                   ),
                                   const SizedBox(height: 8.0),
                                   Text(
-                                    '${AppString.genres}: ${_showGenres(state.tvDetails!.genres)}',
+                                    '${AppString.genres}: ${_showGenres(
+                                        state.tvDetails!.genres)}',
                                     style: const TextStyle(
                                       color: Colors.white70,
                                       fontSize: 12.0,
@@ -202,8 +207,8 @@ class _TvDetailsScreenState extends State<TvDetailsScreen> {
                               ),
                             ),
                           ),
-                           SizedBox(
-                            height: size.height*.03,
+                          SizedBox(
+                            height: size.height * .03,
                           ),
                           DefaultTabController(
                               length: 2,
@@ -212,16 +217,16 @@ class _TvDetailsScreenState extends State<TvDetailsScreen> {
                                   SizedBox(
                                     child: TabBar(
                                         labelPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 15),
+                                        const EdgeInsets.symmetric(
+                                            vertical: 15),
                                         physics: const BouncingScrollPhysics(),
                                         unselectedLabelColor: Colors.white70,
                                         indicatorColor: Colors.red,
                                         indicatorWeight: 3,
                                         tabs: tabs),
                                   ),
-                                   SizedBox(
-                                    height: size.height*.01,
+                                  SizedBox(
+                                    height: size.height * .01,
                                   ),
                                   SizedBox(
                                     height: size.height * .8,
@@ -236,80 +241,83 @@ class _TvDetailsScreenState extends State<TvDetailsScreen> {
                                                 alignment: Alignment.center,
                                                 decoration: BoxDecoration(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
+                                                    BorderRadius.circular(
+                                                        10),
                                                     color:
-                                                        Colors.grey.shade800),
+                                                    Colors.grey.shade800),
                                                 width: size.width * .9,
                                                 child: DropdownButton(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
+                                                    BorderRadius.circular(
+                                                        10),
                                                     value: widget.currentSeason,
                                                     isExpanded: true,
                                                     underline: Container(),
                                                     items: seasons
                                                         .map<
-                                                            DropdownMenuItem<
-                                                                int>>((int val) =>
-                                                            DropdownMenuItem<
-                                                                    int>(
-                                                                value: val,
-                                                                child: Text(
-                                                                    '${AppString.season} $val')))
+                                                        DropdownMenuItem<
+                                                            int>>((int val) =>
+                                                        DropdownMenuItem<
+                                                            int>(
+                                                            value: val,
+                                                            child: Text(
+                                                                '${AppString
+                                                                    .season} $val')))
                                                         .toList(),
                                                     onChanged: (x) {
                                                       setState(() {
                                                         Navigator.of(context)
                                                             .pushReplacement(
                                                           MaterialPageRoute(
-                                                            builder: (context) =>
+                                                            builder: (
+                                                                context) =>
                                                                 TvDetailsScreen(
                                                                     id: widget
                                                                         .id,
                                                                     currentSeason:
-                                                                        x!),
+                                                                    x!),
                                                           ),
                                                         );
                                                       });
                                                     }),
                                               ),
-                                               SizedBox(
-                                                height: size.height*.01,
+                                              SizedBox(
+                                                height: size.height * .01,
                                               ),
                                               SizedBox(
                                                 height: size.height * .7,
                                                 child: SingleChildScrollView(
                                                   scrollDirection:
-                                                      Axis.vertical,
+                                                  Axis.vertical,
                                                   physics:
-                                                      const BouncingScrollPhysics(),
+                                                  const BouncingScrollPhysics(),
                                                   child: ListView.builder(
                                                     scrollDirection:
-                                                        Axis.vertical,
+                                                    Axis.vertical,
                                                     shrinkWrap: true,
                                                     physics:
-                                                        const BouncingScrollPhysics(),
+                                                    const BouncingScrollPhysics(),
                                                     itemCount: episodes.length,
                                                     itemBuilder:
                                                         (context, index) {
                                                       final episode =
-                                                          episodes[index];
+                                                      episodes[index];
                                                       return Container(
 
                                                         padding:
-                                                            const EdgeInsets
-                                                                .all(10.0),
+                                                        const EdgeInsets
+                                                            .all(10.0),
                                                         margin: const EdgeInsets
                                                             .all(5.0),
                                                         decoration:
-                                                            BoxDecoration(
-                                                          color: Theme.of(
-                                                                  context)
+                                                        BoxDecoration(
+                                                          color: Theme
+                                                              .of(
+                                                              context)
                                                               .scaffoldBackgroundColor,
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
+                                                          BorderRadius
+                                                              .circular(15),
                                                         ),
                                                         child: Column(
                                                           children: [
@@ -317,76 +325,97 @@ class _TvDetailsScreenState extends State<TvDetailsScreen> {
                                                               children: [
                                                                 ClipRRect(
                                                                   borderRadius: const BorderRadius
-                                                                          .all(
-                                                                      Radius.circular(
+                                                                      .all(
+                                                                      Radius
+                                                                          .circular(
                                                                           8.0)),
                                                                   child:
-                                                                      CachedNetworkImage(
+                                                                  CachedNetworkImage(
                                                                     width:
-                                                                       size.width*.3,
+                                                                    size.width *
+                                                                        .3,
                                                                     height:
-                                                                       size.height*.1,
+                                                                    size
+                                                                        .height *
+                                                                        .1,
                                                                     fit: BoxFit
                                                                         .cover,
                                                                     imageUrl: ApiConstance
                                                                         .imageUrl(
-                                                                            episode.stillPath),
-                                                                    placeholder: (context,
-                                                                            url) =>
+                                                                        episode
+                                                                            .stillPath),
+                                                                    placeholder: (
+                                                                        context,
+                                                                        url) =>
                                                                         Shimmer
                                                                             .fromColors(
-                                                                      baseColor:
+                                                                          baseColor:
                                                                           Colors
                                                                               .grey[850]!,
-                                                                      highlightColor:
+                                                                          highlightColor:
                                                                           Colors
                                                                               .grey[800]!,
-                                                                      child:
+                                                                          child:
                                                                           Container(
-                                                                        height:
-                                                                            size.height*1.9,
-                                                                        width:
-                                                                            size.height*.2,
-                                                                        decoration:
+                                                                            height:
+                                                                            size
+                                                                                .height *
+                                                                                1.9,
+                                                                            width:
+                                                                            size
+                                                                                .height *
+                                                                                .2,
+                                                                            decoration:
                                                                             BoxDecoration(
-                                                                          color:
-                                                                              Colors.black,
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(8.0),
+                                                                              color:
+                                                                              Colors
+                                                                                  .black,
+                                                                              borderRadius:
+                                                                              BorderRadius
+                                                                                  .circular(
+                                                                                  8.0),
+                                                                            ),
+                                                                          ),
                                                                         ),
-                                                                      ),
-                                                                    ),
-                                                                    errorWidget: (context,
-                                                                            url,
-                                                                            error) =>
-                                                                        const Icon(
-                                                                            Icons.error),
+                                                                    errorWidget: (
+                                                                        context,
+                                                                        url,
+                                                                        error) =>
+                                                                    const Icon(
+                                                                        Icons
+                                                                            .error),
                                                                   ),
                                                                 ),
                                                                 const SizedBox(
                                                                     width: 10),
                                                                 Column(
                                                                   mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceAround,
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
                                                                   crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
+                                                                  CrossAxisAlignment
+                                                                      .start,
                                                                   children: [
                                                                     Row(
                                                                       children: [
                                                                         Text(
-                                                                            '${episode.episodeNumber}.'),
+                                                                            '${episode
+                                                                                .episodeNumber}.'),
                                                                         SizedBox(
                                                                           width:
-                                                                              size.width*.52,
+                                                                          size
+                                                                              .width *
+                                                                              .52,
                                                                           child:
-                                                                              Text(
-                                                                            episode.name,
+                                                                          Text(
+                                                                            episode
+                                                                                .name,
                                                                             style:
-                                                                                const TextStyle(fontSize: 15),
+                                                                            const TextStyle(
+                                                                                fontSize: 15),
                                                                             overflow:
-                                                                                TextOverflow.ellipsis,
+                                                                            TextOverflow
+                                                                                .ellipsis,
                                                                           ),
                                                                         ),
                                                                       ],
@@ -399,7 +428,8 @@ class _TvDetailsScreenState extends State<TvDetailsScreen> {
                                                                             .airDate,
                                                                         style: const TextStyle(
                                                                             color:
-                                                                                Colors.grey)),
+                                                                            Colors
+                                                                                .grey)),
                                                                   ],
                                                                 ),
                                                               ],
@@ -424,55 +454,57 @@ class _TvDetailsScreenState extends State<TvDetailsScreen> {
                                           ),
                                         ),
                                         GridView.builder(
-                                          shrinkWrap: true,
+
                                           physics:
-                                              const BouncingScrollPhysics(),
+                                          const BouncingScrollPhysics(),
                                           itemCount:
-                                              state.tvRecommendations.length,
+                                          state.tvRecommendations.length,
                                           itemBuilder: (context, index) {
                                             final recommendation =
-                                                state.tvRecommendations[index];
+                                            state.tvRecommendations[index];
                                             return FadeInUp(
                                               from: 20,
                                               duration: const Duration(
                                                   milliseconds: 500),
                                               child: ClipRRect(
                                                 borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(4.0)),
+                                                const BorderRadius.all(
+                                                    Radius.circular(4.0)),
                                                 child: CachedNetworkImage(
                                                   imageUrl:
-                                                      ApiConstance.imageUrl(
-                                                          recommendation
-                                                              .backdropPath!),
+                                                  ApiConstance.imageUrl(
+                                                      recommendation
+                                                          .backdropPath!),
                                                   placeholder: (context, url) =>
                                                       Shimmer.fromColors(
-                                                    baseColor:
+                                                        baseColor:
                                                         Colors.grey[850]!,
-                                                    highlightColor:
+                                                        highlightColor:
                                                         Colors.grey[800]!,
-                                                    child: Container(
-                                                      height: size.height*.2,
-                                                      width: size.width*.3,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.black,
-                                                        borderRadius:
+                                                        child: Container(
+                                                          height: size.height *
+                                                              .2,
+                                                          width: size.width *
+                                                              .3,
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.black,
+                                                            borderRadius:
                                                             BorderRadius
                                                                 .circular(8.0),
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ),
                                                   errorWidget: (context, url,
-                                                          error) =>
-                                                      const Icon(Icons.error),
-                                                  height: size.height*.2,
+                                                      error) =>
+                                                  const Icon(Icons.error),
+                                                  height: size.height * .2,
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),
                                             );
                                           },
                                           gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
                                             mainAxisSpacing: 8.0,
                                             crossAxisSpacing: 8.0,
                                             childAspectRatio: 0.7,
